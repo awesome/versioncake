@@ -7,13 +7,6 @@ class ExtractionStrategyTest < ActiveSupport::TestCase
     end
   end
 
-  test "extract will convert the the result to integer" do
-    class TestStrategy < VersionCake::ExtractionStrategy
-      def execute(request); "123"; end
-    end
-    assert_equal 123, TestStrategy.new.extract("request")
-  end
-
   test "it can lookup a strategy" do
     strategy = VersionCake::ExtractionStrategy.lookup(:query_parameter)
     assert_equal VersionCake::QueryParameterStrategy, strategy.class

@@ -7,7 +7,7 @@ class HttpAcceptParameterStrategyTest < ActiveSupport::TestCase
 
   test "a request with an HTTP_ACCEPT version retrieves the version" do
     request = stub(:headers => {'HTTP_ACCEPT' => 'application/xml; api_version=11'})
-    assert_equal 11, @strategy.extract(request)
+    assert_equal "11", @strategy.extract(request)
   end
 
   test "a request without an HTTP_ACCEPT version returns nil" do

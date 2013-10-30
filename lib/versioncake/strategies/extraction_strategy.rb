@@ -8,8 +8,7 @@ module VersionCake
     @@version_string = 'api_version'
 
     def extract(request)
-      version = execute(request)
-      return version.to_i if version && /[0-9]+/.match(version)
+      execute(request)
     end
 
     def execute(request)

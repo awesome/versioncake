@@ -18,6 +18,10 @@ class ActionViewVersions < Rails::Railtie
       if app.config.respond_to?(:default_version)
         VersionCake::Configuration.default_version = app.config.default_version
       end
+
+      if app.config.respond_to?(:view_version_format)
+        VersionCake::Configuration.version_version_format = app.config.version_version_format
+      end
     end
   end
 end

@@ -7,7 +7,7 @@ class HttpHeaderStrategyTest < ActiveSupport::TestCase
 
   test "a request with an HTTP_X_API_VERSION retrieves the version" do
     request = stub(:headers => {'HTTP_X_API_VERSION' => '11'})
-    assert_equal 11, @strategy.extract(request)
+    assert_equal '11', @strategy.extract(request)
   end
 
   test "a request without an HTTP_X_API_VERSION returns nil" do

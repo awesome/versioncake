@@ -5,6 +5,7 @@ module VersionCake
   module Configuration
 
     SUPPORTED_VERSIONS_DEFAULT = (1..10)
+    VERSION_FORMATS = [:numeric, :date]
 
     mattr_reader :supported_version_numbers
 
@@ -13,6 +14,9 @@ module VersionCake
 
     mattr_accessor :default_version
     self.default_version = nil
+
+    mattr_accessor :version_format
+    self.version_format = :numeric
 
     def self.extraction_strategy=(val)
       @@extraction_strategies.clear
@@ -26,16 +30,39 @@ module VersionCake
       @@supported_version_numbers.sort!.reverse!
     end
 
-    def self.supported_versions(requested_version_number=nil)
-      supported_version_numbers.collect do |supported_version_number|
-        if requested_version_number.nil? || supported_version_number <= requested_version_number
-          :"v#{supported_version_number}"
-        end
+    def self.version_format=(val)
+      raise Exception, "Invalid version format, acceptable values are #{VERSION_FORMATS.join(", ")}" unless VERSION_FORMATS.include?(val)
+      @@version_format = val
+    end
+
+    def self.format_version(val)
+      puts "formatting version number #{val} to format #{@@version_format}"
+      case @@version_format
+        when :numeric
+          val.to_i if val && /[0-9]+/.match(val)
+        when :date
+          Date.strptime(val, "%Y-%m-%d") rescue nil
       end
     end
 
+    def self.supported_versions(requested_version_number=nil)
+      if requested_version_number
+        versions = supported_version_numbers.dup
+        versions.push(requested_version_number)
+        versions.uniq!.sort!.reverse!
+        version_list = versions[versions.index(requested_version_number)..versions.length]
+      else
+        version_list = supported_version_numbers
+      end
+
+      version_list.collect { |v| :"v#{v}" }
+    end
+
     def self.supports_version?(version)
-      supported_version_numbers.include? version
+      puts "supports_version?(#{version}) in #{supported_version_numbers.join(",")}"
+      a = supported_version_numbers.include? version
+      puts "supported? #{a}"
+      a
     end
 
     def self.latest_version

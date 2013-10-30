@@ -31,7 +31,7 @@ class StrategyControllerTest < ActionController::TestCase
     data = []
     data << "headers:#{headers}" if headers
     data << "params:#{params}" if params
-    "Expected #{data.join(",")} with method #{method} to yield #{response}"
+    "Expected #{method} request with #{data.join(",")} to yield #{response}"
   end
 
 end
